@@ -261,9 +261,9 @@ fun WebViewScreen(
             val lastSession = sessionManager.loadLastSessionSnapshot()
             if (lastSession != null) {
                 val restoreData = sessionManager.applySessionSnapshot(lastSession)
-                _webViewState.value = _webViewState.value.copy(
+                viewModel.updateWebViewState(webViewState.copy(
                     shouldImportSession = restoreData
-                )
+                ))
             }
         }
     }

@@ -132,7 +132,7 @@ class BackupService @Inject constructor(
         }
     }
 
-    private fun restoreBackupFromJson(json: String): Boolean {
+    private suspend fun restoreBackupFromJson(json: String): Boolean {
         return try {
             val root = gson.fromJson(json, com.google.gson.JsonObject::class.java)
             
@@ -201,7 +201,7 @@ class BackupService @Inject constructor(
                     emptyList()
                 }
                 // Save encrypted credentials directly
-                val allEncrypted = com.cylonid.nativealpha.waos.model.CredentialRepository.loadAllEncryptedCredentialsForBackup(context).toMutableList()
+                val allEncrypted = com.cylonid.nativealpha.waos.model.CredentialRepository.loadAllEncryptedCredentials(context).toMutableList()
                 allEncrypted.addAll(credentials)
                 com.cylonid.nativealpha.waos.model.CredentialRepository.saveAllEncryptedCredentials(context, allEncrypted)
             }
@@ -242,7 +242,7 @@ class BackupService @Inject constructor(
 
     private fun loadAllCredentials(): List<com.cylonid.nativealpha.waos.model.EncryptedCredentialItem> {
         return try {
-            com.cylonid.nativealpha.waos.model.CredentialRepository.loadAllEncryptedCredentialsForBackup(context)
+            com.cylonid.nativealpha.waos.model.CredentialRepository.loadAllEncryptedCredentials(context)
         } catch (e: Exception) {
             emptyList()
         }

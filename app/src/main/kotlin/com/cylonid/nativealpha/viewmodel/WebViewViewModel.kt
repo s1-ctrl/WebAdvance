@@ -87,13 +87,8 @@ class WebViewViewModel @Inject constructor(
         // TODO: Implement refresh logic
     }
 
-    fun updateScrollPosition(position: Int) {
-        _webApp.value?.let { app ->
-            val updatedApp = app.copy(scrollPosition = position)
-            viewModelScope.launch {
-                repository.updateWebApp(updatedApp)
-            }
-        }
+    fun updateWebViewState(newState: WebViewState) {
+        _webViewState.value = newState
     }
 
     fun onPageStarted(url: String) {

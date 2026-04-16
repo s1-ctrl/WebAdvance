@@ -146,6 +146,16 @@
                 android:contentDescription="Share this file" />
 
             <Button
+                android:id="@+id/button_copy_path"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:text="Copy Path"
+                android:textAllCaps="false"
+                android:contentDescription="Copy file path" />
+
+            <Button
                 android:id="@+id/button_fullscreen"
                 android:layout_width="0dp"
                 android:layout_weight="1"
