@@ -8,6 +8,11 @@ import android.os.Build
 import android.widget.MediaController
 import android.widget.VideoView
 import androidx.compose.animation.core.*
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,9 +50,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.content.FileProvider
 import androidx.core.net.toUri
 import androidx.exifinterface.media.ExifInterface
-import com.cylonid.nativealpha.manager.FileViewerManager
-import com.cylonid.nativealpha.ui.theme.*
-import com.github.barteksc.pdfviewer.PDFView
+import com.cylonid.nativealpha.fileviewer.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -345,7 +348,7 @@ fun UniversalFileViewerScreen(
                         )
                     }
                     mimeType == "application/pdf" -> {
-                        PdfViewer(file = activeFile)
+                        PdfViewerContent(file = activeFile)
                     }
                     mimeType == "text/html" || mimeType == "multipart/related" || activeFile.extension.lowercase() == "htm" -> {
                         HtmlViewer(file = activeFile)
