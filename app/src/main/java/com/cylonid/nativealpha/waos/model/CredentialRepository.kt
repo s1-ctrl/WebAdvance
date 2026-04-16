@@ -59,7 +59,9 @@ object CredentialRepository {
         getStorageFile(context).writeText(Gson().toJson(updated))
     }
 
-    private fun loadAllEncryptedCredentials(context: Context): MutableList<EncryptedCredentialItem> {
+    fun saveAllEncryptedCredentials(context: Context, credentials: List<EncryptedCredentialItem>) {
+        getStorageFile(context).writeText(Gson().toJson(credentials))
+    }
         val file = getStorageFile(context)
         if (!file.exists()) return mutableListOf()
         return try {

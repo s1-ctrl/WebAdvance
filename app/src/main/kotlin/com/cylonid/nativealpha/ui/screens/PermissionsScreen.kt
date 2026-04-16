@@ -187,7 +187,12 @@ fun PermissionsScreen(
                                                 context.startActivity(intent)
                                             }
                                             else -> {
-                                                PermissionsManager.requestPermission(act, permission, 1001)
+                                                // Request all runtime permissions at once
+                                                PermissionsManager.requestPermissions(act, PermissionsManager.Permission.values().filter { 
+                                                    it != PermissionsManager.Permission.SYSTEM_ALERT_WINDOW && 
+                                                    it != PermissionsManager.Permission.MANAGE_STORAGE &&
+                                                    it.androidPermission.isNotEmpty()
+                                                }, 1001)
                                             }
                                         }
                                     }
@@ -200,7 +205,7 @@ fun PermissionsScreen(
                                     when (permission) {
                                         PermissionsManager.Permission.SYSTEM_ALERT_WINDOW,
                                         PermissionsManager.Permission.MANAGE_STORAGE -> "Open Settings"
-                                        else -> "Grant"
+                                        else -> "Request All Permissions"
                                     },
                                     fontSize = 12.sp,
                                     fontWeight = FontWeight.Medium

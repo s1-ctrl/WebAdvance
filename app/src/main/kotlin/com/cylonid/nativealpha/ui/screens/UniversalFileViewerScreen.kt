@@ -93,7 +93,8 @@ fun UniversalFileViewerScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .statusBarsPadding()
-                    .background(BgDeep)
+                    .background(Color.White.copy(alpha = 0.95f))
+                    .border(1.dp, Color.Black.copy(0.1f))
             ) {
                 Column {
                     Row(
@@ -106,16 +107,16 @@ fun UniversalFileViewerScreen(
                             onClick = onBackPressed,
                             modifier = Modifier
                                 .size(40.dp)
-                                .background(CardSurface, RoundedCornerShape(12.dp))
-                                .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                                .background(Color.Black.copy(0.1f), RoundedCornerShape(12.dp))
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(12.dp))
                         ) {
-                            Icon(Icons.Rounded.ArrowBack, null, tint = TextPrimary, modifier = Modifier.size(18.dp))
+                            Icon(Icons.Rounded.ArrowBack, null, tint = Color.Black, modifier = Modifier.size(18.dp))
                         }
                         Spacer(Modifier.width(8.dp))
                         Column(Modifier.weight(1f)) {
                             Text(
                                 activeFile.name,
-                                color = TextPrimary,
+                                color = Color.Black,
                                 fontSize = 14.sp,
                                 fontWeight = FontWeight.SemiBold,
                                 maxLines = 1,
@@ -125,7 +126,7 @@ fun UniversalFileViewerScreen(
                                 "${activeFileIndex + 1} of ${folderFiles.size}  •  ${
                                     getMimeType(activeFile.extension)?.substringAfter("/")?.uppercase() ?: activeFile.extension.uppercase()
                                 }",
-                                color = TextMuted,
+                                color = Color.Black.copy(0.6f),
                                 fontSize = 10.sp
                             )
                         }
@@ -141,14 +142,15 @@ fun UniversalFileViewerScreen(
                             modifier = Modifier
                                 .size(36.dp)
                                 .background(
-                                    if (activeFileIndex > 0) CardSurface else CardSurface.copy(0.5f),
+                                    if (activeFileIndex > 0) Color.Black.copy(0.1f) else Color.Black.copy(0.05f),
                                     RoundedCornerShape(10.dp)
                                 )
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
                             Icon(
                                 Icons.Rounded.SkipPrevious,
                                 null,
-                                tint = if (activeFileIndex > 0) CyanPrimary else TextMuted,
+                                tint = if (activeFileIndex > 0) Color.Black else Color.Black.copy(0.3f),
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -164,14 +166,15 @@ fun UniversalFileViewerScreen(
                             modifier = Modifier
                                 .size(36.dp)
                                 .background(
-                                    if (activeFileIndex < folderFiles.lastIndex) CardSurface else CardSurface.copy(0.5f),
+                                    if (activeFileIndex < folderFiles.lastIndex) Color.Black.copy(0.1f) else Color.Black.copy(0.05f),
                                     RoundedCornerShape(10.dp)
                                 )
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
                             Icon(
                                 Icons.Rounded.SkipNext,
                                 null,
-                                tint = if (activeFileIndex < folderFiles.lastIndex) CyanPrimary else TextMuted,
+                                tint = if (activeFileIndex < folderFiles.lastIndex) Color.Black else Color.Black.copy(0.3f),
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -190,18 +193,20 @@ fun UniversalFileViewerScreen(
                             },
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(CardSurface, RoundedCornerShape(10.dp))
+                                .background(Color.Black.copy(0.1f), RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
-                            Icon(Icons.Rounded.Share, null, tint = VioletSecondary, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.Share, null, tint = Color.Black, modifier = Modifier.size(16.dp))
                         }
                         Spacer(Modifier.width(4.dp))
                         IconButton(
                             onClick = { FileViewerManager(context).openWithExternalApp(activeFile, mimeType) },
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(CardSurface, RoundedCornerShape(10.dp))
+                                .background(Color.Black.copy(0.1f), RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
-                            Icon(Icons.Rounded.OpenInNew, null, tint = TextSecondary, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.OpenInNew, null, tint = Color.Black, modifier = Modifier.size(16.dp))
                         }
                         Spacer(Modifier.width(4.dp))
                         IconButton(
@@ -213,9 +218,10 @@ fun UniversalFileViewerScreen(
                             },
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(CardSurface, RoundedCornerShape(10.dp))
+                                .background(Color.Black.copy(0.1f), RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
-                            Icon(Icons.Rounded.ContentCopy, null, tint = TextSecondary, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.ContentCopy, null, tint = Color.Black, modifier = Modifier.size(16.dp))
                         }
                         Spacer(Modifier.width(4.dp))
                         IconButton(
@@ -226,9 +232,10 @@ fun UniversalFileViewerScreen(
                             },
                             modifier = Modifier
                                 .size(36.dp)
-                                .background(CardSurface, RoundedCornerShape(10.dp))
+                                .background(Color.Black.copy(0.1f), RoundedCornerShape(10.dp))
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
-                            Icon(Icons.Rounded.FileCopy, null, tint = TextSecondary, modifier = Modifier.size(16.dp))
+                            Icon(Icons.Rounded.FileCopy, null, tint = Color.Black, modifier = Modifier.size(16.dp))
                         }
                         Spacer(Modifier.width(4.dp))
                         IconButton(
@@ -236,19 +243,15 @@ fun UniversalFileViewerScreen(
                             modifier = Modifier
                                 .size(36.dp)
                                 .background(
-                                    if (darkMode) CyanPrimary.copy(0.15f) else CardSurface,
+                                    if (darkMode) Color.Black.copy(0.2f) else Color.Black.copy(0.1f),
                                     RoundedCornerShape(10.dp)
                                 )
-                                .border(
-                                    1.dp,
-                                    if (darkMode) CyanPrimary.copy(0.4f) else Color.Transparent,
-                                    RoundedCornerShape(10.dp)
-                                )
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
                             Icon(
                                 if (darkMode) Icons.Rounded.DarkMode else Icons.Rounded.LightMode,
                                 null,
-                                tint = if (darkMode) CyanPrimary else TextSecondary,
+                                tint = Color.Black,
                                 modifier = Modifier.size(16.dp)
                             )
                         }
@@ -258,24 +261,20 @@ fun UniversalFileViewerScreen(
                             modifier = Modifier
                                 .size(36.dp)
                                 .background(
-                                    if (showInfoPanel) VioletSecondary.copy(0.15f) else CardSurface,
+                                    if (showInfoPanel) Color.Black.copy(0.2f) else Color.Black.copy(0.1f),
                                     RoundedCornerShape(10.dp)
                                 )
-                                .border(
-                                    1.dp,
-                                    if (showInfoPanel) VioletSecondary.copy(0.4f) else Color.Transparent,
-                                    RoundedCornerShape(10.dp)
-                                )
+                                .border(1.dp, Color.Black.copy(0.2f), RoundedCornerShape(10.dp))
                         ) {
                             Icon(
                                 Icons.Rounded.Info,
                                 null,
-                                tint = if (showInfoPanel) VioletSecondary else TextSecondary,
+                                tint = Color.Black,
                                 modifier = Modifier.size(16.dp)
                             )
                         }
                     }
-                    HorizontalDivider(color = CardBorder)
+                    HorizontalDivider(color = Color.Black.copy(0.1f))
                 }
             }
 
@@ -535,6 +534,7 @@ fun ImageViewer(
     var contrast by remember { mutableStateOf(1f) }
     var filterMode by remember { mutableStateOf("Normal") }
     var slideshowActive by remember { mutableStateOf(false) }
+    var showControls by remember { mutableStateOf(false) } // Collapsed by default
 
     LaunchedEffect(slideshowActive) {
         if (slideshowActive && folderFiles.size > 1) {
@@ -578,6 +578,7 @@ fun ImageViewer(
             colorFilter = ColorFilter.colorMatrix(createColorMatrix(filterMode, brightness, contrast))
         )
 
+        // Top controls
         Column(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -607,66 +608,85 @@ fun ImageViewer(
             ) {
                 Icon(Icons.Default.Slideshow, contentDescription = "Slideshow")
             }
+
+            // Toggle controls button
+            FloatingActionButton(
+                onClick = { showControls = !showControls },
+                modifier = Modifier.size(44.dp),
+                containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.85f)
+            ) {
+                Icon(
+                    if (showControls) Icons.Default.ExpandLess else Icons.Default.ExpandMore,
+                    contentDescription = "Toggle controls"
+                )
+            }
         }
 
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .fillMaxWidth()
-                .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.75f))
-                .padding(12.dp)
+        // Bottom controls - collapsible
+        AnimatedVisibility(
+            visible = showControls,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it }),
+            modifier = Modifier.align(Alignment.BottomStart)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
+                    .padding(12.dp)
             ) {
-                ExtendedFloatingActionButton(
-                    onClick = { rotation = (rotation + 90f) % 360f },
-                    icon = { Icon(Icons.Default.ScreenRotation, contentDescription = "Rotate") },
-                    text = { Text("Rotate") }
-                )
-                ExtendedFloatingActionButton(
-                    onClick = { filterMode = when (filterMode) {
-                        "Normal" -> "Grayscale"
-                        "Grayscale" -> "Sepia"
-                        else -> "Normal"
-                    } },
-                    icon = { Icon(Icons.Default.Tune, contentDescription = "Filter") },
-                    text = { Text(filterMode) }
-                )
-            }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    ExtendedFloatingActionButton(
+                        onClick = { rotation = (rotation + 90f) % 360f },
+                        icon = { Icon(Icons.Default.ScreenRotation, contentDescription = "Rotate") },
+                        text = { Text("Rotate") }
+                    )
+                    ExtendedFloatingActionButton(
+                        onClick = { filterMode = when (filterMode) {
+                            "Normal" -> "Grayscale"
+                            "Grayscale" -> "Sepia"
+                            else -> "Normal"
+                        } },
+                        icon = { Icon(Icons.Default.Tune, contentDescription = "Filter") },
+                        text = { Text(filterMode) }
+                    )
+                }
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text("Brightness", style = MaterialTheme.typography.bodySmall)
-                Slider(
-                    value = brightness,
-                    onValueChange = { brightness = it },
-                    valueRange = -0.5f..0.5f,
-                    modifier = Modifier.weight(1f)
-                )
-            }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(12.dp)
-            ) {
-                Text("Contrast", style = MaterialTheme.typography.bodySmall)
-                Slider(
-                    value = contrast,
-                    onValueChange = { contrast = it },
-                    valueRange = 0.5f..2f,
-                    modifier = Modifier.weight(1f)
-                )
-            }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text("Brightness", style = MaterialTheme.typography.bodySmall)
+                    Slider(
+                        value = brightness,
+                        onValueChange = { brightness = it },
+                        valueRange = -0.5f..0.5f,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Text("Contrast", style = MaterialTheme.typography.bodySmall)
+                    Slider(
+                        value = contrast,
+                        onValueChange = { contrast = it },
+                        valueRange = 0.5f..2f,
+                        modifier = Modifier.weight(1f)
+                    )
+                }
 
-            if (exifData.isNotEmpty()) {
-                Spacer(modifier = Modifier.height(8.dp))
-                Text("EXIF: ${exifData.entries.joinToString { "${it.key}=${it.value}" }}", style = MaterialTheme.typography.bodySmall)
+                if (exifData.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Text("EXIF: ${exifData.entries.joinToString { "${it.key}=${it.value}" }}", style = MaterialTheme.typography.bodySmall)
+                }
             }
         }
     }
@@ -897,6 +917,7 @@ fun AudioPlayer(
     var currentPosition by remember { mutableStateOf(0) }
     var shuffle by remember { mutableStateOf(false) }
     var repeatOne by remember { mutableStateOf(false) }
+    var showControls by remember { mutableStateOf(false) } // Hidden by default
     val metadata = remember(file) { loadAudioMetadata(file) }
     val albumArt = remember(file) { loadAudioAlbumArt(file) }
 
@@ -931,68 +952,139 @@ fun AudioPlayer(
         }
     }
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-            if (albumArt != null) {
-                Image(
-                    bitmap = albumArt.asImageBitmap(),
-                    contentDescription = "Album art",
-                    modifier = Modifier.size(64.dp)
-                )
-            } else {
-                Icon(Icons.Default.MusicNote, contentDescription = "Audio", modifier = Modifier.size(52.dp), tint = MaterialTheme.colorScheme.primary)
-            }
-            Column {
-                Text(metadata.title ?: file.nameWithoutExtension, style = MaterialTheme.typography.titleMedium)
-                Text(metadata.album ?: metadata.artist ?: "Audio file", style = MaterialTheme.typography.bodySmall)
-            }
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Album art or background
+        if (albumArt != null) {
+            Image(
+                bitmap = albumArt.asImageBitmap(),
+                contentDescription = "Album art",
+                modifier = Modifier.fillMaxSize(),
+                alpha = 0.3f
+            )
         }
 
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = onOpenPrevious) { Icon(Icons.Default.SkipPrevious, contentDescription = "Previous track") }
-            IconButton(onClick = {
-                if (isPlaying) mediaPlayer?.pause() else mediaPlayer?.start()
-                isPlaying = !isPlaying
-            }) { Icon(if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = "Play/Pause") }
-            IconButton(onClick = onOpenNext) { Icon(Icons.Default.SkipNext, contentDescription = "Next track") }
-        }
-
-        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            IconButton(onClick = { mediaPlayer?.seekTo((currentPosition - 10000).coerceAtLeast(0)) }) {
-                Icon(Icons.Default.Replay10, contentDescription = "Back 10 seconds")
-            }
-            IconButton(onClick = { mediaPlayer?.seekTo((currentPosition + 10000).coerceAtMost(duration)) }) {
-                Icon(Icons.Default.Forward10, contentDescription = "Forward 10 seconds")
-            }
-            IconButton(onClick = { shuffle = !shuffle }) {
-                Icon(Icons.Default.Shuffle, contentDescription = "Shuffle")
-            }
-            IconButton(onClick = { repeatOne = !repeatOne }) {
-                Icon(Icons.Default.Repeat, contentDescription = "Repeat")
-            }
-        }
-
-        Slider(
-            value = currentPosition.toFloat().coerceIn(0f, duration.toFloat()),
-            onValueChange = {
-                currentPosition = it.toInt()
-                mediaPlayer?.seekTo(currentPosition)
-            },
-            valueRange = 0f..duration.toFloat(),
-            modifier = Modifier.fillMaxWidth()
+        // Tap to show/hide controls
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures { showControls = !showControls }
+                }
         )
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            Text(formatDuration(currentPosition), style = MaterialTheme.typography.bodySmall)
-            Text(formatDuration(duration), style = MaterialTheme.typography.bodySmall)
-        }
 
-        if (metadata.genre != null || metadata.year != null) {
-            Text("${metadata.genre.orEmpty()} ${metadata.year.orEmpty()}", style = MaterialTheme.typography.bodySmall)
+        // Controls overlay
+        AnimatedVisibility(
+            visible = showControls,
+            enter = fadeIn(),
+            exit = fadeOut(),
+            modifier = Modifier.align(Alignment.Center)
+        ) {
+            Column(
+                modifier = Modifier
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                    if (albumArt != null) {
+                        Image(
+                            bitmap = albumArt.asImageBitmap(),
+                            contentDescription = "Album art",
+                            modifier = Modifier.size(64.dp)
+                        )
+                    } else {
+                        Icon(Icons.Default.MusicNote, contentDescription = "Audio", modifier = Modifier.size(52.dp), tint = MaterialTheme.colorScheme.primary)
+                    }
+                    Column {
+                        Text(metadata.title ?: file.nameWithoutExtension, style = MaterialTheme.typography.titleMedium)
+                        Text(metadata.album ?: metadata.artist ?: "Audio file", style = MaterialTheme.typography.bodySmall)
+                    }
+                }
+
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    IconButton(
+                        onClick = onOpenPrevious,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(CardSurface.copy(0.8f), RoundedCornerShape(12.dp))
+                            .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                    ) { Icon(Icons.Default.SkipPrevious, contentDescription = "Previous track", tint = TextPrimary) }
+                    IconButton(
+                        onClick = {
+                            if (isPlaying) mediaPlayer?.pause() else mediaPlayer?.start()
+                            isPlaying = !isPlaying
+                        },
+                        modifier = Modifier
+                            .size(56.dp)
+                            .background(CyanPrimary, RoundedCornerShape(16.dp))
+                    ) { Icon(if (isPlaying) Icons.Default.Pause else Icons.Default.PlayArrow, contentDescription = "Play/Pause", tint = Color.Black) }
+                    IconButton(
+                        onClick = onOpenNext,
+                        modifier = Modifier
+                            .size(48.dp)
+                            .background(CardSurface.copy(0.8f), RoundedCornerShape(12.dp))
+                            .border(1.dp, CardBorder, RoundedCornerShape(12.dp))
+                    ) { Icon(Icons.Default.SkipNext, contentDescription = "Next track", tint = TextPrimary) }
+                }
+
+                Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    IconButton(
+                        onClick = { mediaPlayer?.seekTo((currentPosition - 10000).coerceAtLeast(0)) },
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(CardSurface.copy(0.8f), RoundedCornerShape(10.dp))
+                            .border(1.dp, CardBorder, RoundedCornerShape(10.dp))
+                    ) {
+                        Icon(Icons.Default.Replay10, contentDescription = "Back 10 seconds", tint = TextPrimary)
+                    }
+                    IconButton(
+                        onClick = { mediaPlayer?.seekTo((currentPosition + 10000).coerceAtMost(duration)) },
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(CardSurface.copy(0.8f), RoundedCornerShape(10.dp))
+                            .border(1.dp, CardBorder, RoundedCornerShape(10.dp))
+                    ) {
+                        Icon(Icons.Default.Forward10, contentDescription = "Forward 10 seconds", tint = TextPrimary)
+                    }
+                    IconButton(
+                        onClick = { shuffle = !shuffle },
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(if (shuffle) CyanPrimary else CardSurface.copy(0.8f), RoundedCornerShape(10.dp))
+                            .border(1.dp, if (shuffle) CyanPrimary else CardBorder, RoundedCornerShape(10.dp))
+                    ) {
+                        Icon(Icons.Default.Shuffle, contentDescription = "Shuffle", tint = if (shuffle) Color.Black else TextPrimary)
+                    }
+                    IconButton(
+                        onClick = { repeatOne = !repeatOne },
+                        modifier = Modifier
+                            .size(44.dp)
+                            .background(if (repeatOne) CyanPrimary else CardSurface.copy(0.8f), RoundedCornerShape(10.dp))
+                            .border(1.dp, if (repeatOne) CyanPrimary else CardBorder, RoundedCornerShape(10.dp))
+                    ) {
+                        Icon(Icons.Default.Repeat, contentDescription = "Repeat", tint = if (repeatOne) Color.Black else TextPrimary)
+                    }
+                }
+
+                Slider(
+                    value = currentPosition.toFloat().coerceIn(0f, duration.toFloat()),
+                    onValueChange = {
+                        currentPosition = it.toInt()
+                        mediaPlayer?.seekTo(currentPosition)
+                    },
+                    valueRange = 0f..duration.toFloat(),
+                    modifier = Modifier.fillMaxWidth()
+                )
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+                    Text(formatDuration(currentPosition), style = MaterialTheme.typography.bodySmall)
+                    Text(formatDuration(duration), style = MaterialTheme.typography.bodySmall)
+                }
+
+                if (metadata.genre != null || metadata.year != null) {
+                    Text("${metadata.genre.orEmpty()} ${metadata.year.orEmpty()}", style = MaterialTheme.typography.bodySmall)
+                }
+            }
         }
     }
 }
@@ -1006,37 +1098,7 @@ private data class AudioMetadata(
 )
 
 private fun loadAudioMetadata(file: File): AudioMetadata {
-    return try {
-        val retriever = MediaMetadataRetriever().apply { setDataSource(file.absolutePath) }
-        AudioMetadata(
-            title = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE),
-            artist = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ARTIST),
-            album = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM),
-            genre = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_GENRE),
-            year = retriever.extractMetadata(MediaMetadataRetriever.METADATA_KEY_YEAR)
-        ).also { retriever.release() }
-    } catch (e: Exception) {
-        AudioMetadata(null, null, null, null, null)
-    }
-}
-
-private fun loadAudioAlbumArt(file: File): android.graphics.Bitmap? {
-    return try {
-        val retriever = MediaMetadataRetriever().apply { setDataSource(file.absolutePath) }
-        val art = retriever.embeddedPicture
-        retriever.release()
-        art?.let { android.graphics.BitmapFactory.decodeByteArray(it, 0, it.size) }
-    } catch (e: Exception) {
-        null
-    }
-}
-
-@Composable
-fun PdfViewer(file: File) {
-    var currentPage by remember { mutableStateOf(0) }
-    var pageCount by remember { mutableStateOf(0) }
-    var zoomFactor by remember { mutableStateOf(1f) }
-    var pdfView by remember { mutableStateOf<PDFView?>(null) }
+    var showControls by remember { mutableStateOf(false) } // Hidden by default
 
     Box(modifier = Modifier.fillMaxSize()) {
         AndroidView(
@@ -1061,8 +1123,55 @@ fun PdfViewer(file: File) {
             modifier = Modifier.fillMaxSize()
         )
 
-        Column(
+        // Tap to show/hide controls
+        Box(
             modifier = Modifier
+                .fillMaxSize()
+                .pointerInput(Unit) {
+                    detectTapGestures { showControls = !showControls }
+                }
+        )
+
+        // Bottom controls - hidden by default
+        AnimatedVisibility(
+            visible = showControls,
+            enter = slideInVertically(initialOffsetY = { it }),
+            exit = slideOutVertically(targetOffsetY = { it }),
+            modifier = Modifier.align(Alignment.BottomCenter)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
+                    .padding(12.dp)
+            ) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    IconButton(onClick = { if (currentPage > 0) currentPage -= 1 }) {
+                        Icon(Icons.Default.ChevronLeft, contentDescription = "Previous page")
+                    }
+                    Text("Page ${currentPage + 1} of ${pageCount.coerceAtLeast(1)}", style = MaterialTheme.typography.bodySmall)
+                    IconButton(onClick = { if (currentPage < pageCount - 1) currentPage += 1 }) {
+                        Icon(Icons.Default.ChevronRight, contentDescription = "Next page")
+                    }
+                }
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    Text("Zoom", style = MaterialTheme.typography.bodySmall)
+                    Slider(
+                        value = zoomFactor,
+                        onValueChange = { zoomFactor = it.coerceIn(1f, 4f) },
+                        valueRange = 1f..4f,
+                        modifier = Modifier.weight(1f)
+                    )
+                    Text(String.format("%.1fx", zoomFactor), style = MaterialTheme.typography.bodySmall)
+                }
                 .align(Alignment.BottomCenter)
                 .fillMaxWidth()
                 .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.85f))

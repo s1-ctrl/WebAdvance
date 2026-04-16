@@ -43,8 +43,13 @@ class BackupService @Inject constructor(
             val backupFile = File(backupDir, "waos_backup_$timestamp.waos")
 
             val webApps = webAppRepository.getAllWebApps().first()
+            val downloads = com.cylonid.nativealpha.waos.model.DownloadRepository.loadDownloads(context)
+            val clipboard = com.cylonid.nativealpha.waos.model.ClipboardRepository.loadClipboardItems(context)
+            val credentials = loadAllCredentials() // We'll need to handle encryption
+            val sessions = loadAllSessions()
+
             val settings = mapOf(
-                "version" to 2,
+                "version" to 3,
                 "timestamp" to timestamp,
                 "format" to "waos",
                 "appName" to "WAOS - Web App Operating System"
@@ -52,7 +57,11 @@ class BackupService @Inject constructor(
 
             val backupData = mapOf(
                 "settings" to settings,
-                "webApps" to webApps
+                "webApps" to webApps,
+                "downloads" to downloads,
+                "clipboard" to clipboard,
+                "credentials" to credentials,
+                "sessions" to sessions
             )
 
             val json = gson.toJson(backupData)
@@ -74,15 +83,24 @@ class BackupService @Inject constructor(
             val uri = fileDoc.uri
 
             val webApps = webAppRepository.getAllWebApps().first()
+            val downloads = com.cylonid.nativealpha.waos.model.DownloadRepository.loadDownloads(context)
+            val clipboard = com.cylonid.nativealpha.waos.model.ClipboardRepository.loadClipboardItems(context)
+            val credentials = loadAllCredentials()
+            val sessions = loadAllSessions()
+
             val settings = mapOf(
-                "version" to 2,
+                "version" to 3,
                 "timestamp" to timestamp,
                 "format" to "waos",
                 "appName" to "WAOS - Web App Operating System"
             )
             val backupData = mapOf(
                 "settings" to settings,
-                "webApps" to webApps
+                "webApps" to webApps,
+                "downloads" to downloads,
+                "clipboard" to clipboard,
+                "credentials" to credentials,
+                "sessions" to sessions
             )
             val json = gson.toJson(backupData)
 
@@ -117,24 +135,94 @@ class BackupService @Inject constructor(
     private fun restoreBackupFromJson(json: String): Boolean {
         return try {
             val root = gson.fromJson(json, com.google.gson.JsonObject::class.java)
-            val webAppsJson = root.getAsJsonArray("webApps") ?: return false
-
-            val webAppsType = object : TypeToken<List<WebApp>>() {}.type
-            val webApps: List<WebApp> = try {
-                gson.fromJson(webAppsJson, webAppsType)
-            } catch (e: Exception) {
-                emptyList()
-            }
-
-            webApps.forEach { app ->
-                try {
-                    webAppRepository.insertWebApp(app.copy(id = 0, thumbnail = null))
+            
+            // Restore web apps
+            val webAppsJson = root.getAsJsonArray("webApps")
+            if (webAppsJson != null) {
+                val webAppsType = object : TypeToken<List<WebApp>>() {}.type
+                val webApps: List<WebApp> = try {
+                    gson.fromJson(webAppsJson, webAppsType)
                 } catch (e: Exception) {
-                    // Skip apps that fail to insert individually
+                    emptyList()
+                }
+
+                webApps.forEach { app ->
+                    try {
+                        webAppRepository.insertWebApp(app.copy(id = 0, thumbnail = null))
+                    } catch (e: Exception) {
+                        // Skip apps that fail to insert individually
+                    }
                 }
             }
 
-            webApps.isNotEmpty()
+            // Restore downloads
+            val downloadsJson = root.getAsJsonArray("downloads")
+            if (downloadsJson != null) {
+                val downloadsType = object : TypeToken<List<com.cylonid.nativealpha.waos.model.DownloadRecord>>() {}.type
+                val downloads: List<com.cylonid.nativealpha.waos.model.DownloadRecord> = try {
+                    gson.fromJson(downloadsJson, downloadsType)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+                downloads.forEach { download ->
+                    try {
+                        com.cylonid.nativealpha.waos.model.DownloadRepository.saveDownload(context, download)
+                    } catch (e: Exception) {
+                        // Skip
+                    }
+                }
+            }
+
+            // Restore clipboard
+            val clipboardJson = root.getAsJsonArray("clipboard")
+            if (clipboardJson != null) {
+                val clipboardType = object : TypeToken<List<com.cylonid.nativealpha.waos.model.ClipboardItem>>() {}.type
+                val clipboard: List<com.cylonid.nativealpha.waos.model.ClipboardItem> = try {
+                    gson.fromJson(clipboardJson, clipboardType)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+                clipboard.forEach { item ->
+                    try {
+                        com.cylonid.nativealpha.waos.model.ClipboardRepository.saveClipboardItem(context, item)
+                    } catch (e: Exception) {
+                        // Skip
+                    }
+                }
+            }
+
+            // Restore credentials (encrypted)
+            val credentialsJson = root.getAsJsonArray("credentials")
+            if (credentialsJson != null) {
+                val credentialsType = object : TypeToken<List<com.cylonid.nativealpha.waos.model.EncryptedCredentialItem>>() {}.type
+                val credentials: List<com.cylonid.nativealpha.waos.model.EncryptedCredentialItem> = try {
+                    gson.fromJson(credentialsJson, credentialsType)
+                } catch (e: Exception) {
+                    emptyList()
+                }
+                // Save encrypted credentials directly
+                val allEncrypted = com.cylonid.nativealpha.waos.model.CredentialRepository.loadAllEncryptedCredentialsForBackup(context).toMutableList()
+                allEncrypted.addAll(credentials)
+                com.cylonid.nativealpha.waos.model.CredentialRepository.saveAllEncryptedCredentials(context, allEncrypted)
+            }
+
+            // Restore sessions
+            val sessionsJson = root.getAsJsonObject("sessions")
+            if (sessionsJson != null) {
+                sessionsJson.keySet().forEach { appIdStr ->
+                    try {
+                        val appId = appIdStr.toLong()
+                        val sessionJson = sessionsJson.get(appIdStr).asString
+                        val session = gson.fromJson(sessionJson, com.google.gson.JsonObject::class.java)
+                        val sessionManager = com.cylonid.nativealpha.webview.SessionManager(context, appId, "Restored App")
+                        sessionManager.saveLastSessionSnapshot(session)
+                    } catch (e: Exception) {
+                        // Skip
+                    }
+                }
+            }
+
+            true
         } catch (e: Exception) {
             false
         }
@@ -150,5 +238,35 @@ class BackupService @Inject constructor(
 
     suspend fun importData() {
         // Handled via file picker in UI
+    }
+
+    private fun loadAllCredentials(): List<com.cylonid.nativealpha.waos.model.EncryptedCredentialItem> {
+        return try {
+            com.cylonid.nativealpha.waos.model.CredentialRepository.loadAllEncryptedCredentialsForBackup(context)
+        } catch (e: Exception) {
+            emptyList()
+        }
+    }
+
+    private fun loadAllSessions(): Map<Long, String> {
+        val sessions = mutableMapOf<Long, String>()
+        try {
+            // Get all web apps and try to load their sessions
+            val webApps = webAppRepository.getAllWebApps().first()
+            webApps.forEach { app ->
+                try {
+                    val sessionManager = com.cylonid.nativealpha.webview.SessionManager(context, app.id, app.name)
+                    val session = sessionManager.loadLastSessionSnapshot()
+                    if (session != null) {
+                        sessions[app.id] = gson.toJson(session)
+                    }
+                } catch (e: Exception) {
+                    // Skip session if can't load
+                }
+            }
+        } catch (e: Exception) {
+            // Ignore
+        }
+        return sessions
     }
 }
